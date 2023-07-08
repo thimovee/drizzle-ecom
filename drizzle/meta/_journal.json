@@ -1,0 +1,13 @@
+{
+  "version": "5",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1688145837619,
+      "tag": "0000_dear_whistler",
+      "breakpoints": true
+    }
+  ]
+}

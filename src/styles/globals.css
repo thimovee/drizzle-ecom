@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.cl-internal-12c0t36 {
+    font-size: 12px;
+    padding-left: 4px;
+    padding-right: 4px;
+    margin-right: auto;
+}
