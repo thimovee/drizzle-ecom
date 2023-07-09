@@ -4,7 +4,9 @@ import { ColumnDef, ColumnFiltersState, SortingState, flexRender, getCoreRowMode
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/Table"
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Download, PlusCircle, Trash } from "lucide-react"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/Button"
+import { Button, buttonVariants } from "@/components/ui/Button"
+import Link from "next/link"
+import { cn } from "@/lib/utils"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -44,7 +46,7 @@ export function DataTable<TData, TValue>({
                     value={(table.getColumn("name")?.getFilterValue() as string) ?? ""} />
                 <div className="flex gap-2">
                     {table.getFilteredSelectedRowModel().rows.length > 0 && <Button variant="destructive" className="items-center  text-slate-100"> <Trash className="w-4 h-4 mr-2" /> Delete ({table.getFilteredSelectedRowModel().rows.length})</Button>}
-                    <Button className="items-center bg-slate-900 text-slate-100"> <PlusCircle className="w-4 h-4 mr-2" /> Add Product</Button>
+                    <Link href="/dashboard/products/new" className={cn(buttonVariants({ variant: 'ghost' }), 'items-center bg-slate-900 hover:bg-slate-700 hover:text-white text-slate-100')}> <PlusCircle className="w-4 h-4 mr-2" /> Add Product</Link>
                     <Button className="items-center bg-slate-900 text-slate-100"> <Download className="w-4 h-4 mr-2" /> Download</Button>
                 </div>
             </div>

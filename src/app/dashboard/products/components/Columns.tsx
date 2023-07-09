@@ -113,7 +113,7 @@ export const columns: ColumnDef<Product>[] = [
         }
         ,
         cell: (cell) => (
-            <span className=" font-medium">{formatPrice(cell.row.original.rating)}</span>
+            <span className=" font-medium">{cell.row.original.rating}</span>
         )
     },
     {

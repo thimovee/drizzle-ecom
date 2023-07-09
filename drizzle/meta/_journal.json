@@ -8,6 +8,20 @@
       "when": 1688145837619,
       "tag": "0000_dear_whistler",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1688850751635,
+      "tag": "0001_jittery_human_cannonball",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1688863544127,
+      "tag": "0002_zippy_random",
+      "breakpoints": true
     }
   ]
 }

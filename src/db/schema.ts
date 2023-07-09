@@ -10,8 +10,6 @@ export const products = mysqlTable("products", {
     price: decimal("price", { precision: 10, scale: 2 }).notNull().default("0"),
     inventory: int("inventory").notNull().default(0),
     rating: int("rating").notNull().default(0),
-    details: json("details").$type<string[] | null>().default(null),
-    tags: json("tags").$type<string[] | null>().default(null),
     createdAt: datetime("createdAt", { mode: "string", fsp: 3 })
         .notNull()
         .default(sql`CURRENT_TIMESTAMP(3)`),
