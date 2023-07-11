@@ -19,3 +19,7 @@ export const productSchema = z.object({
     categoryId: z.number(),
     categoryName: z.string().optional(),
 })
+
+export const getProductSchema = z.object({
+    id: z.number(),
+})

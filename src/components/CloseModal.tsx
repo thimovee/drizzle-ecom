@@ -1,19 +1,23 @@
 'use client'
 
 import { X } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 import { FC } from 'react'
-import { Button } from './ui/Button'
+import { buttonVariants } from './ui/Button'
+import { cn } from '@/lib/utils'
 
-interface CloseModalProps { }
+interface CloseModalProps {
+    path: string
+}
 
-const CloseModal: FC<CloseModalProps> = ({ }) => {
-    const router = useRouter()
+const CloseModal: FC<CloseModalProps> = ({ path }) => {
 
     return (
-        <Button variant='outline' className='h-6 w-6 p-0 rounded-md items-center' onClick={() => router.back()}>
+        <a href={`/dashboard/${path}`} className={cn(
+            buttonVariants({ variant: "outline" }),
+            "h-6 w-6 p-0 rounded-md items-center"
+        )} >
             <X aria-label='close modal' className='h-4 w-4' />
-        </Button>
+        </a>
     )
 }
 

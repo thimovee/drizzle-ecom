@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Button, buttonVariants } from "@/components/ui/Button"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
+import { toast } from "sonner"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -37,6 +38,10 @@ export function DataTable<TData, TValue>({
         },
     })
 
+    function deleteSelectedRows() {
+        toast.error("You need admin privileges to delete products")
+    }
+
     return (
         <div className="rounded-md">
             <div className="flex pt-2 pb-4 w-full justify-between">
@@ -45,13 +50,41 @@ export function DataTable<TData, TValue>({
                     placeholder="Filter products..."
                     value={(table.getColumn("name")?.getFilterValue() as string) ?? ""} />
                 <div className="flex gap-2">
-                    {table.getFilteredSelectedRowModel().rows.length > 0 && <Button variant="destructive" className="items-center  text-slate-100"> <Trash className="w-4 h-4 mr-2" /> Delete ({table.getFilteredSelectedRowModel().rows.length})</Button>}
+                    {table.getFilteredSelectedRowModel().rows.length > 0 && <Button onClick={deleteSelectedRows} variant="destructive" className="items-center  text-slate-100"> <Trash className="w-4 h-4 mr-2" /> Delete ({table.getFilteredSelectedRowModel().rows.length})</Button>}
                     <Link href="/dashboard/products/new" className={cn(buttonVariants({ variant: 'ghost' }), 'items-center bg-slate-900 hover:bg-slate-700 hover:text-white text-slate-100')}> <PlusCircle className="w-4 h-4 mr-2" /> Add Product</Link>
-                    <Button className="items-center bg-slate-900 text-slate-100"> <Download className="w-4 h-4 mr-2" /> Download</Button>
+                    <Button onClick={async () => {
+                        const rows =
+                            table.getFilteredSelectedRowModel().rows
+                                .length > 0
+                                ? table.getFilteredSelectedRowModel()
+                                    .rows
+                                : table.getFilteredRowModel().rows
+
+                        let csvContent = "ProductID;Product Name;Category;Price;Inventory;Rating;Added\n";
+
+                        for (const row of rows) {
+                            csvContent +=
+                                // @ts-ignore
+                                `${row.original.id};${row.original.name};${row.original.categoryName};${row.original.price};${row.original.inventory};${row.original.rating};${row.original.createdAt}\n`;
+                        }
+
+                        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+                        const url = URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        link.setAttribute('href', url);
+                        link.setAttribute('download', 'products.csv');
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }} className="items-center bg-slate-900 text-slate-100">
+                        <Download className="w-4 h-4 mr-2" /> Download
+                    </Button>
+
+
                 </div>
             </div>
             <div className="border-b border-b-transparent">
-                <Table className="min-h-[620px]">
+                <Table>
                     <TableHeader className="bg-slate-100 font-semibold ">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id} className="max-w-fit">

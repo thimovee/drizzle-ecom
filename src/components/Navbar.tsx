@@ -18,6 +18,8 @@ const Navbar: FC<NavbarProps> = async () => {
                     <Link className="ml-4 text-sm font-medium transition-colors text-neutral-500 hover:text-black" href="/">Suits</Link>
                     <Link className="text-sm font-medium transition-colors text-neutral-500 hover:text-black" href="/">Shirts</Link>
                     <Link className="text-sm font-medium transition-colors text-neutral-500 hover:text-black" href="/">Glasses</Link>
+                    {/* categories dropdown */}
+                    <Link className="text-sm font-medium transition-colors text-neutral-500 hover:text-black" href="/">Blog</Link>
                 </div>
                 <div className="flex gap-2 items-center">
                     <Button className="rounded-md flex items-center border border-transparent gap-2">

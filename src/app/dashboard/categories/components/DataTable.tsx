@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Download, PlusCircle, Trash } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/Button"
-
+import { toast } from "sonner"
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
@@ -35,6 +35,10 @@ export function DataTable<TData, TValue>({
         },
     })
 
+    function deleteItems() {
+        toast.error("You need admin privileges to delete categories.")
+    }
+
     return (
         <div className="rounded-md">
             <div className="flex pt-2 pb-4 w-full justify-between">
@@ -43,13 +47,13 @@ export function DataTable<TData, TValue>({
                     placeholder="Filter categories..."
                     value={(table.getColumn("name")?.getFilterValue() as string) ?? ""} />
                 <div className="flex gap-2">
-                    {table.getFilteredSelectedRowModel().rows.length > 0 && <Button variant="destructive" className="items-center  text-slate-100"> <Trash className="w-4 h-4 mr-2" /> Delete ({table.getFilteredSelectedRowModel().rows.length})</Button>}
+                    {table.getFilteredSelectedRowModel().rows.length > 0 && <Button onClick={deleteItems} variant="destructive" className="items-center  text-slate-100"> <Trash className="w-4 h-4 mr-2" /> Delete ({table.getFilteredSelectedRowModel().rows.length})</Button>}
                     <Button className="items-center bg-slate-900 text-slate-100"> <PlusCircle className="w-4 h-4 mr-2" /> Add Category</Button>
                     <Button className="items-center bg-slate-900 text-slate-100"> <Download className="w-4 h-4 mr-2" /> Download</Button>
                 </div>
             </div>
             <div className="border-b border-b-transparent">
-                <Table className="min-h-[620px]">
+                <Table>
                     <TableHeader className="bg-slate-100 font-semibold ">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id} className="max-w-fit">

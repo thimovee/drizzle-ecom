@@ -30,6 +30,6 @@ export interface CheckoutItem extends CartItem {
 }
 
 export interface CartLineItem
-    extends Pick<Product, | "id" | "name" | "images" | "categoryName" | "price" | "inventory"> {
+    extends Pick<Product, | "id" | "name" | "images" | "price" | "inventory"> {
     quantity?: number
 }

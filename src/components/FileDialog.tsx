@@ -109,7 +109,7 @@ export function FileDialog<TFieldValues extends FieldValues>({
                     <span className="sr-only">Upload Images</span>
                 </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[480px]">
+            <DialogContent className="sm:max-w-[480px] bg-white">
                 <p className="absolute left-5 top-4 text-base font-medium text-muted-foreground">
                     Upload your images
                 </p>
@@ -178,7 +178,7 @@ export function FileDialog<TFieldValues extends FieldValues>({
                         type="button"
                         variant="outline"
                         size="sm"
-                        className="mt-2.5 w-full"
+                        className="mt-2.5 w-full items-center"
                         onClick={() => {
                             setFiles(null)
                             setValue(
@@ -276,7 +276,7 @@ function FileCard<TFieldValues extends FieldValues>({
                                 type="button"
                                 variant="outline"
                                 size="sm"
-                                className="h-7 w-7 p-0"
+                                className="h-7 w-7 p-0 items-center"
                             >
                                 <Crop className="h-4 w-4 text-white" aria-hidden="true" />
                                 <span className="sr-only">Crop image</span>
@@ -307,8 +307,7 @@ function FileCard<TFieldValues extends FieldValues>({
                                     <Button
                                         aria-label="Crop image"
                                         type="button"
-                                        size="sm"
-                                        className="h-8"
+                                        className="h-8 items-center bg-slate-900 text-slate-100 border-slate-600 border"
                                         onClick={() => {
                                             onCrop()
                                             setIsOpen(false)
@@ -323,9 +322,7 @@ function FileCard<TFieldValues extends FieldValues>({
                                     <Button
                                         aria-label="Reset crop"
                                         type="button"
-                                        variant="outline"
-                                        size="sm"
-                                        className="h-8"
+                                        className="h-8 items-center bg-slate-900 text-slate-100 border-slate-600 border"
                                         onClick={() => {
                                             cropperRef.current?.cropper.reset()
                                             setCropData(null)

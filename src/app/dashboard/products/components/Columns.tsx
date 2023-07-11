@@ -1,7 +1,7 @@
 "use client"
 import { Checkbox } from "@/components/ui/checkbox"
 import { ColumnDef } from "@tanstack/react-table"
-import { ChevronDown, Copy, Eye, MoreHorizontal, Trash } from "lucide-react";
+import { ChevronDown, Copy, Edit, Eye, MoreHorizontal, Trash } from "lucide-react";
 import { formatDate, formatPrice } from "@/lib/utils";
 import { Product } from "@/db/schema";
 import { Badge } from "@/components/ui/Badge";
@@ -15,7 +15,12 @@ import {
 } from "@/components/ui/DropdownMenu"
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
-export const columns: ColumnDef<Product>[] = [
+
+interface ExtendedProduct extends Product {
+    categoryName: string
+}
+
+export const columns: ColumnDef<ExtendedProduct>[] = [
     {
         id: "select",
         header: ({ table }) => (
@@ -154,17 +159,11 @@ export const columns: ColumnDef<Product>[] = [
                             <MoreHorizontal className="h-4 w-4" />
                         </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                    <DropdownMenuContent align="end" className="text-slate-800">
+                        <DropdownMenuItem asChild><Link href={`/dashboard/products/edit/${product.id}`} className="flex"><Edit className="w-4 h-4 mr-2" />  Edit</Link></DropdownMenuItem>
+                        <DropdownMenuItem asChild><Link className="flex items-center" href={`/products/${product.id}`}> <Eye className="w-4 h-4 mr-2" /> View</Link></DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                            onClick={() => navigator.clipboard.writeText(product.id.toString())}
-                        >
-                            <Copy className="w-4 h-4 mr-2" />  Copy ID
-                        </DropdownMenuItem>
-                        <DropdownMenuItem><Link className="flex items-center" href={`/products/${product.id}`}> <Eye className="w-4 h-4 mr-2" /> Product Page</Link></DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem> <Trash className="w-4 h-4 mr-2" /> Delete Product</DropdownMenuItem>
+                        <DropdownMenuItem> <Link href={`/dashboard/products/delete/${product.id}`} className="flex w-full"><Trash className="w-4 h-4 mr-2" /> Delete</Link></DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             )

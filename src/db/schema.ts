@@ -16,9 +16,7 @@ export const products = mysqlTable("products", {
     categoryId: int("categoryId").notNull()
 })
 
-export type Product = InferModel<typeof products> & {
-    categoryName: string;
-};
+export type Product = InferModel<typeof products>
 
 
 export const categories = mysqlTable("categories", {
