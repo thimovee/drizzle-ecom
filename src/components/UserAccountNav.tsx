@@ -82,10 +82,8 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
                     </DropdownMenuContent>
                 </DropdownMenu >
             ) : (
-                <Link href="/signin">
-                    <Button variant="outline">
-                        Sign in
-                    </Button>
+                <Link href="/sign-in" className='hover:bg-slate-100 p-2 rounded-md duration-200 ease-in'>
+                    <User2 className="w-5 h-5" />
                 </Link>
             )
             }

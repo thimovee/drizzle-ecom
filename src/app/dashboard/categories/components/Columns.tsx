@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/DropdownMenu"
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
+import Image from "next/image";
 export const columns: ColumnDef<Category>[] = [
     {
         id: "select",
@@ -49,6 +50,39 @@ export const columns: ColumnDef<Category>[] = [
         },
         cell: (cell) => (
             <span className="font-medium"><Badge variant="outline">{cell.row.original.name}</Badge></span>
+        )
+    },
+    {
+        accessorKey: "description",
+        header: ({ column }) => {
+            return (
+                <button
+                    className="flex"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Description
+                </button>
+            )
+        },
+        cell: (cell) => (
+            <span className="font-medium"><Badge variant="outline">{cell.row.original.description.slice(0, 100)}...</Badge></span>
+        )
+    },
+    {
+        accessorKey: "thumbnail",
+        header: ({ column }) => {
+            return (
+                <button
+                    className="flex"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Thumbnail
+                </button>
+            )
+        },
+        cell: (cell) => (
+            // @ts-ignore
+            <>{cell.row.original.thumbnail && <Image className="w-8 h-8 object-cover hover:cursor-zoom-in" src={cell.row.original.thumbnail[0].url} width={50} height={50} alt={cell.row.original.name} />}</>
         )
     },
     {

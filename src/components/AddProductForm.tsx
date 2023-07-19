@@ -34,7 +34,7 @@ import { FileDialog } from "@/components/FileDialog"
 import { addProduct } from "@/app/_actions/product"
 import type { OurFileRouter } from "@/app/api/uploadthing/core"
 import { Loader } from "lucide-react"
-
+import { useRouter } from "next/navigation"
 
 type Inputs = z.infer<typeof productSchema>
 
@@ -44,17 +44,15 @@ export function AddProductForm({ categories }: { categories: Category[] }) {
     const [files, setFiles] = React.useState<FileWithPreview[] | null>(null)
     const [isPending, startTransition] = React.useTransition()
     const { isUploading, startUpload } = useUploadThing("productImage")
-
+    const router = useRouter()
     const form = useForm<Inputs>({
         resolver: zodResolver(productSchema),
         defaultValues: {
-            categoryId: 1,
+            categoryId: 25,
         },
     })
 
     function onSubmit(data: Inputs) {
-        console.log(data)
-
         startTransition(async () => {
             try {
                 const images = isArrayOfFile(data.images)
@@ -67,7 +65,6 @@ export function AddProductForm({ categories }: { categories: Category[] }) {
                         return formattedImages
                     })
                     : null
-
                 await addProduct({
                     ...data,
                     // @ts-ignore
@@ -81,6 +78,7 @@ export function AddProductForm({ categories }: { categories: Category[] }) {
                 form.resetField("categoryId")
                 form.resetField("inventory")
                 setFiles(null)
+                router.push("/dashboard/products")
             } catch (error) {
                 error instanceof Error
                     ? toast.error(error.message)

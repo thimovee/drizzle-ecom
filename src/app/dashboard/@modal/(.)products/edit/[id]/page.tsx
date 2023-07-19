@@ -25,7 +25,7 @@ export default async function EditProduct({ params }: { params: { id: number } }
                     </div>
 
                     <div className="p-3">
-                        {allCategories.length > 0 ? <EditProductForm categories={allCategories} product={product} /> : <Loader />}
+                        <EditProductForm categories={allCategories} product={product} />
                     </div>
                 </div>
             </div>

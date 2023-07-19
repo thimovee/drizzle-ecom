@@ -1,6 +1,6 @@
 import type { CartItem, StoredFile } from "@/types"
 import { sql, type InferModel } from "drizzle-orm"
-import { datetime, decimal, int, json, mysqlTable, serial, text, timestamp, varchar } from "drizzle-orm/mysql-core"
+import { boolean, datetime, decimal, int, json, mysqlTable, serial, text, timestamp, varchar } from "drizzle-orm/mysql-core"
 
 export const products = mysqlTable("products", {
     id: serial("id").primaryKey(),
@@ -22,29 +22,37 @@ export type Product = InferModel<typeof products>
 export const categories = mysqlTable("categories", {
     id: serial("id").primaryKey(),
     name: varchar("name", { length: 191 }).notNull(),
+    thumbnail: json("thumbnail").$type<StoredFile | null>().default(null),
+    description: text("description").notNull().default("Category Description"),
     createdAt: datetime("createdAt", { mode: "string", fsp: 3 })
         .notNull()
         .default(sql`CURRENT_TIMESTAMP(3)`),
 },)
 
+export const orders = mysqlTable("orders", {
+    id: serial("id").primaryKey(),
+    isPaid: boolean("isPaid").default(false),
+    phone: varchar("phone", { length: 255 }).default(""),
+    address: text("address").default(""),
+    createdAt: datetime("createdAt", { mode: "string", fsp: 3 })
+        .notNull()
+        .default(sql`CURRENT_TIMESTAMP(3)`),
+    orderId: varchar("orderId", { length: 255 }).default("").notNull(),
+});
+
+export const orderItems = mysqlTable("orderItems", {
+    id: serial("id").primaryKey(),
+    orderId: varchar("orderId", { length: 255 }).default("").notNull(),
+    productId: int("productId"),
+});
+
+
+export type orderItems = InferModel<typeof orderItems> & {
+    product: Product;
+}
+
+export type Order = InferModel<typeof orders> & {
+    orderItems: InferModel<typeof orderItems>[];
+};
+
 export type Category = InferModel<typeof categories>
-
-export const carts = mysqlTable("carts", {
-    id: serial("id").primaryKey(),
-    userId: varchar("userId", { length: 191 }),
-    paymentIntentId: varchar("paymentIntentId", { length: 191 }),
-    clientSecret: varchar("clientSecret", { length: 191 }),
-    items: json("items").$type<CartItem[] | null>().default(null),
-    createdAt: timestamp("createdAt").defaultNow(),
-})
-
-export type Cart = InferModel<typeof carts>
-
-export const wishlists = mysqlTable("wishlists", {
-    id: serial("id").primaryKey(),
-    userId: varchar("userId", { length: 191 }),
-    items: json("items").$type<CartItem[] | null>().default(null),
-    createdAt: timestamp("createdAt").defaultNow(),
-})
-
-export type Wishlist = InferModel<typeof wishlists>

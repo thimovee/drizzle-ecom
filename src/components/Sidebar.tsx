@@ -10,7 +10,6 @@ const Sidebar = () => {
 
     const paths = [
         { name: 'Account', icon: User, link: '/dashboard/' },
-        { name: 'Featured', icon: Tv2, link: '/dashboard/featured' },
         { name: 'Products', icon: Package, link: '/dashboard/products' },
         { name: 'Categories', icon: Menu, link: '/dashboard/categories' },
         { name: 'Orders', icon: DollarSign, link: '/dashboard/orders' },

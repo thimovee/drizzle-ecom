@@ -15,11 +15,14 @@ import {
 } from "@/components/ui/DropdownMenu"
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
+import { toast } from "sonner";
 
-interface ExtendedProduct extends Product {
+export interface ExtendedProduct extends Product {
     categoryName: string
 }
-
+function handleDeletion() {
+    toast.error("You need admin priviliges to delete this product.")
+}
 export const columns: ColumnDef<ExtendedProduct>[] = [
     {
         id: "select",
@@ -163,7 +166,7 @@ export const columns: ColumnDef<ExtendedProduct>[] = [
                         <DropdownMenuItem asChild><Link href={`/dashboard/products/edit/${product.id}`} className="flex"><Edit className="w-4 h-4 mr-2" />  Edit</Link></DropdownMenuItem>
                         <DropdownMenuItem asChild><Link className="flex items-center" href={`/products/${product.id}`}> <Eye className="w-4 h-4 mr-2" /> View</Link></DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem> <Link href={`/dashboard/products/delete/${product.id}`} className="flex w-full"><Trash className="w-4 h-4 mr-2" /> Delete</Link></DropdownMenuItem>
+                        <DropdownMenuItem> <span onClick={handleDeletion} className="flex w-full"><Trash className="w-4 h-4 mr-2" /> Delete</span></DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             )

@@ -1,20 +1,19 @@
 import { DataTable } from '@/app/dashboard/products/components/DataTable'
 import { db } from '@/db'
-import { Product, categories, products } from '@/db/schema'
+import { categories, products } from '@/db/schema'
 import { Metadata } from 'next'
 import React from 'react'
 import { eq } from 'drizzle-orm'
-import { columns } from '@/app/dashboard/products/components/Columns'
+import { ExtendedProduct, columns } from '@/app/dashboard/products/components/Columns'
+
+
 export const metadata: Metadata = {
     title: "Dashboard | Products",
     description: "Manage your products",
 }
 
-
-
-
 const page = async () => {
-    const productList: Product[] = await (await db
+    const productList: ExtendedProduct[] = await (await db
         .select()
         .from(products)
         .leftJoin(categories, eq(products.categoryId, categories.id))

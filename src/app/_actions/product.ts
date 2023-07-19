@@ -1,11 +1,16 @@
 "use server"
-import { revalidatePath } from "next/cache"
 import { db } from "@/db"
-import { products, type Product } from "@/db/schema"
+import { Product, categories, products } from "@/db/schema"
+import {
+    asc,
+    gte,
+    inArray,
+    lte,
+    and, eq, sql, desc
+} from "drizzle-orm"
 import { z } from "zod"
-import { getProductSchema, productSchema } from "@/lib/validations/product"
+import { getProductsSchema, productSchema } from "@/lib/validations/product"
 import { StoredFile } from "@/types"
-import { and, eq } from "drizzle-orm"
 
 export async function addProduct(
     input: z.infer<typeof productSchema> & {
@@ -21,7 +26,6 @@ export async function addProduct(
     };
     // @ts-ignore
     await db.insert(products).values(productData);
-    revalidatePath(`/dashboard/products`);
 }
 
 export async function updateProduct(
@@ -43,5 +47,77 @@ export async function updateProduct(
     }
 
     await db.update(products).set(input).where(eq(products.id, input.id))
-    revalidatePath(`/dashboard/products/${input.id}`)
+}
+
+export async function filterProductsAction(query: string) {
+    if (query.length === 0) return null
+
+    const filteredProducts = await db.execute(sql`
+    SELECT * FROM products WHERE name LIKE ${'%' + query + '%'} 
+  `)
+    console.log(filteredProducts.rows)
+    return filteredProducts.rows
+}
+
+export async function getProductsAction(
+    input: z.infer<typeof getProductsSchema>
+) {
+    const [column, order] =
+        (input.sort?.split(".") as [
+            keyof Product | undefined,
+            "asc" | "desc" | undefined
+        ]) ?? []
+    const [minPrice, maxPrice] = input.price_range?.split("-") ?? []
+    const categories =
+        // @ts-ignore
+        (input.categories?.split(".") as Product["categoryId"][]) ?? []
+
+    const { items, total } = await db.transaction(async (tx) => {
+        const items = await tx
+            .select()
+            .from(products)
+            .limit(input.limit)
+            .offset(input.offset)
+            .where(
+                and(
+                    categories.length
+                        ? inArray(products.categoryId, categories)
+                        : undefined,
+                    minPrice ? gte(products.price, minPrice) : undefined,
+                    maxPrice ? lte(products.price, maxPrice) : undefined,
+                )
+            )
+            .orderBy(
+                column && column in products
+                    ? order === "asc"
+                        ? asc(products[column])
+                        : desc(products[column])
+                    : desc(products.createdAt)
+            )
+
+        const total = await tx
+            .select({
+                count: sql<number>`count(${products.id})`,
+            })
+            .from(products)
+            .where(
+                and(
+                    categories.length
+                        ? inArray(products.categoryId, categories)
+                        : undefined,
+                    minPrice ? gte(products.price, minPrice) : undefined,
+                    maxPrice ? lte(products.price, maxPrice) : undefined,
+                )
+            )
+
+        return {
+            items,
+            total: Number(total[0]?.count) ?? 0,
+        }
+    })
+
+    return {
+        items,
+        total,
+    }
 }

@@ -1,7 +1,7 @@
 import * as z from "zod"
 
 export const productSchema = z.object({
-    name: z.string(),
+    name: z.string().min(3).max(255),
     description: z.string().optional(),
     images: z
         .unknown()
@@ -13,7 +13,7 @@ export const productSchema = z.object({
         .optional()
         .nullable()
         .default(null),
-    price: z.string(),
+    price: z.string().nonempty(),
     inventory: z.number(),
     rating: z.number().default(0),
     categoryId: z.number(),

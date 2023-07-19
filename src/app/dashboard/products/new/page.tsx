@@ -1,6 +1,12 @@
 import { AddProductForm } from '@/components/AddProductForm'
 import getCategories from '@/lib/getAllCategories'
 import React from 'react'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+    title: "Create Product",
+    description: "Create a new product",
+}
 
 const page = async () => {
     const allCategories = await getCategories()

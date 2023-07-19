@@ -4,6 +4,8 @@ import '@/styles/globals.css'
 import { Toaster } from "@/components/ui/toaster"
 import { Urbanist } from 'next/font/google'
 import { ClerkProvider } from '@clerk/nextjs'
+import ModalProvider from '@/components/modal-provider'
+
 const urban = Urbanist({ subsets: ['latin'] })
 
 export const metadata = {
@@ -19,10 +21,11 @@ export default function RootLayout({
 
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body className={urban.className}>
+      <html className={urban.className} lang="en">
+        <body>
+          <ModalProvider />
           <Navbar />
-          <main>{children}</main>
+          <main className='min-h-screen'>{children}</main>
           <Footer />
           <Toaster />
         </body>

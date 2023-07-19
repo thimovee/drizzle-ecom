@@ -2,24 +2,14 @@
 
 import * as React from "react"
 import { type Product, Category } from "@/db/schema"
-import type { FileWithPreview } from "@/types"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { generateReactHelpers } from "@uploadthing/react/hooks"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { type z } from "zod"
-import { isArrayOfFile } from "@/lib/utils"
+import { cn, isArrayOfFile } from "@/lib/utils"
 import { productSchema } from "@/lib/validations/product"
-import { Button } from "@/components/ui/Button"
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-    UncontrolledFormMessage,
-} from "@/components/ui/form"
+import { Button, buttonVariants } from "@/components/ui/Button"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, UncontrolledFormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import {
     Select,
@@ -33,40 +23,20 @@ import { Textarea } from "@/components/ui/textarea"
 import { FileDialog } from "@/components/FileDialog"
 import { updateProduct } from "@/app/_actions/product"
 import type { OurFileRouter } from "@/app/api/uploadthing/core"
-import { Loader } from "lucide-react"
+import { AlertTriangle, Loader } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 
 type Inputs = z.infer<typeof productSchema>
 
-const { useUploadThing } = generateReactHelpers<OurFileRouter>()
-
-export default function UpdateProductForm({ product, categories }: { product: Product, categories: Category[] }) {
-    const [files, setFiles] = React.useState<FileWithPreview[] | null>(null)
+export default function EditProductForm({ product, categories }: { product: Product, categories: Category[] }) {
     const [isPending, startTransition] = React.useTransition()
-
-    React.useEffect(() => {
-        if (product.images && product.images.length > 0) {
-            setFiles(
-                product.images.map((image) => {
-                    const file = new File([], image.name, {
-                        type: "image",
-                    })
-                    const fileWithPreview = Object.assign(file, {
-                        preview: image.url,
-                    })
-
-                    return fileWithPreview
-                })
-            )
-        }
-    }, [product])
-
-    const { isUploading, startUpload } = useUploadThing("productImage")
+    const router = useRouter()
 
     const form = useForm<Inputs>({
         resolver: zodResolver(productSchema),
         defaultValues: {
-            categoryId: 1,
+            categoryId: 25,
         },
     })
 
@@ -74,25 +44,13 @@ export default function UpdateProductForm({ product, categories }: { product: Pr
         console.log(data)
         startTransition(async () => {
             try {
-                const images = isArrayOfFile(data.images)
-                    ? await startUpload(data.images).then((res) => {
-                        const formattedImages = res?.map((image) => ({
-                            id: image.fileKey,
-                            name: image.fileKey.split("_")[1] ?? image.fileKey,
-                            url: image.fileUrl,
-                        }))
-                        return formattedImages ?? null
-                    })
-                    : null
-
                 await updateProduct({
                     ...data,
                     id: product.id,
-                    images: images ?? product.images,
+                    images: product.images ?? null,
                 })
-
                 toast.success("Product updated successfully.")
-                setFiles(null)
+                router.push("/dashboard/products")
             } catch (error) {
                 error instanceof Error
                     ? toast.error(error.message)
@@ -206,25 +164,16 @@ export default function UpdateProductForm({ product, categories }: { product: Pr
                     </FormItem>
                 </div>
                 <FormItem className="flex w-full flex-col gap-1.5">
-                    <FormLabel>Images</FormLabel>
-                    <FormControl>
-                        <FileDialog
-                            setValue={form.setValue}
-                            name="images"
-                            maxFiles={3}
-                            maxSize={1024 * 1024 * 4}
-                            files={files}
-                            setFiles={setFiles}
-                            isUploading={isUploading}
-                            disabled={isPending}
-                        />
-                    </FormControl>
-                    <UncontrolledFormMessage
-                        message={form.formState.errors.images?.message}
-                    />
+                    <span className={cn(
+                        buttonVariants({ size: "sm" }),
+                        "items-center text-sm"
+                    )}>
+                        <AlertTriangle className="mr-2 h-4 w-4" />
+                        Admin privileges are required to edit images after product creation.
+                    </span>
                 </FormItem>
                 <div className="flex space-x-2">
-                    <Button className="w-full bg-slate-900 text-slate-100 hover:bg-slate-700 hover:text-white" disabled={isPending}>
+                    <Button variant="destructive" className="w-full bg-slate-900 text-slate-100 hover:bg-slate-700 hover:text-white" disabled={isPending}>
                         {isPending && (
                             <Loader
                                 className="mr-2 h-4 w-4 animate-spin"

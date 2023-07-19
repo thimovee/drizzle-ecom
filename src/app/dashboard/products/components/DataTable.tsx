@@ -8,16 +8,17 @@ import { Button, buttonVariants } from "@/components/ui/Button"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
+import { ExtendedProduct } from "./Columns"
 
-interface DataTableProps<TData, TValue> {
-    columns: ColumnDef<TData, TValue>[]
-    data: TData[]
+interface DataTableProps<ExtendedProduct, TValue> {
+    columns: ColumnDef<ExtendedProduct, TValue>[]
+    data: ExtendedProduct[]
 }
 
 export function DataTable<TData, TValue>({
     columns,
     data,
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<ExtendedProduct, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [rowSelection, setRowSelection] = React.useState({})
@@ -52,7 +53,7 @@ export function DataTable<TData, TValue>({
                 <div className="flex gap-2">
                     {table.getFilteredSelectedRowModel().rows.length > 0 && <Button onClick={deleteSelectedRows} variant="destructive" className="items-center  text-slate-100"> <Trash className="w-4 h-4 mr-2" /> Delete ({table.getFilteredSelectedRowModel().rows.length})</Button>}
                     <Link href="/dashboard/products/new" className={cn(buttonVariants({ variant: 'ghost' }), 'items-center bg-slate-900 hover:bg-slate-700 hover:text-white text-slate-100')}> <PlusCircle className="w-4 h-4 mr-2" /> Add Product</Link>
-                    <Button onClick={async () => {
+                    <Button className='items-center bg-slate-900 hover:bg-slate-700 hover:text-white text-slate-100' onClick={async () => {
                         const rows =
                             table.getFilteredSelectedRowModel().rows
                                 .length > 0
@@ -76,11 +77,9 @@ export function DataTable<TData, TValue>({
                         document.body.appendChild(link);
                         link.click();
                         document.body.removeChild(link);
-                    }} className="items-center bg-slate-900 text-slate-100">
+                    }}>
                         <Download className="w-4 h-4 mr-2" /> Download
                     </Button>
-
-
                 </div>
             </div>
             <div className="border-b border-b-transparent">

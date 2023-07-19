@@ -4,8 +4,10 @@ import { ColumnDef, ColumnFiltersState, SortingState, flexRender, getCoreRowMode
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/Table"
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Download, PlusCircle, Trash } from "lucide-react"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/Button"
+import { Button, buttonVariants } from "@/components/ui/Button"
 import { toast } from "sonner"
+import { cn } from "@/lib/utils"
+import Link from "next/link"
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
@@ -48,8 +50,31 @@ export function DataTable<TData, TValue>({
                     value={(table.getColumn("name")?.getFilterValue() as string) ?? ""} />
                 <div className="flex gap-2">
                     {table.getFilteredSelectedRowModel().rows.length > 0 && <Button onClick={deleteItems} variant="destructive" className="items-center  text-slate-100"> <Trash className="w-4 h-4 mr-2" /> Delete ({table.getFilteredSelectedRowModel().rows.length})</Button>}
-                    <Button className="items-center bg-slate-900 text-slate-100"> <PlusCircle className="w-4 h-4 mr-2" /> Add Category</Button>
-                    <Button className="items-center bg-slate-900 text-slate-100"> <Download className="w-4 h-4 mr-2" /> Download</Button>
+                    <Link href="/dashboard/categories/new" className={cn(buttonVariants({ variant: 'ghost' }), 'items-center bg-slate-900 hover:bg-slate-700 hover:text-white text-slate-100')}> <PlusCircle className="w-4 h-4 mr-2" /> Add Category</Link>
+                    <Button onClick={async () => {
+                        const rows =
+                            table.getFilteredSelectedRowModel().rows
+                                .length > 0
+                                ? table.getFilteredSelectedRowModel()
+                                    .rows
+                                : table.getFilteredRowModel().rows
+                        let csvContent = "CategoryID;Category Name;Added\n";
+                        for (const row of rows) {
+                            csvContent +=
+                                // @ts-ignore
+                                `${row.original.id};${row.original.name};${row.original.createdAt}\n`;
+                        }
+                        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+                        const url = URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        link.setAttribute('href', url);
+                        link.setAttribute('download', 'categories.csv');
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    }} className='items-center bg-slate-900 hover:bg-slate-700 hover:text-white text-slate-100'>
+                        <Download className="w-4 h-4 mr-2" /> Download
+                    </Button>
                 </div>
             </div>
             <div className="border-b border-b-transparent">
