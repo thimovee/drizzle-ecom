@@ -4,6 +4,7 @@ import useCart from '@/hooks/use-cart';
 import Summary from './components/Summary'
 import CartItem from './components/CartItem';
 
+import { Metadata } from 'next';
 
 export const revalidate = 0;
 
