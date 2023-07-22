@@ -5,11 +5,6 @@ import Summary from './components/Summary'
 import CartItem from './components/CartItem';
 import { Metadata } from 'next';
 
-export const metadata: Metadata = {
-    title: "ECOM | Cart",
-    description: "View your cart.",
-}
-
 export const revalidate = 0;
 
 const CartPage = () => {
