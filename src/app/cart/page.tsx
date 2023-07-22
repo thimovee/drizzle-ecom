@@ -3,12 +3,7 @@ import { useEffect, useState } from 'react';
 import useCart from '@/hooks/use-cart';
 import Summary from './components/Summary'
 import CartItem from './components/CartItem';
-import { Metadata } from 'next';
 
-export const metadata: Metadata = {
-    title: "ECOM | Cart",
-    description: "View your cart.",
-}
 
 export const revalidate = 0;
 

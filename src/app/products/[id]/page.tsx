@@ -3,7 +3,7 @@ import { db } from "@/db";
 import { products, categories } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { ExtendedProduct } from "@/app/dashboard/products/components/Columns";
-import Gallery from "@/components/gallery";
+import Gallery from "@/components/Gallery";
 import ProductCard from "@/components/ProductCard";
 import { formatPrice } from "@/lib/utils";
 import {
