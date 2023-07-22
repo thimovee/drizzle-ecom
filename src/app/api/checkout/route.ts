@@ -53,8 +53,8 @@ export async function POST(req: Request) {
         mode: "payment",
         billing_address_collection: "required",
         phone_number_collection: { enabled: true },
-        success_url: `http://localhost:3000/cart?succes=1`,
-        cancel_url: `http://localhost:3000/cart?canceled=1`,
+        success_url: `/cart?succes=1`,
+        cancel_url: `/cart?canceled=1`,
         metadata: { orderId: orderId },
     });
     return NextResponse.json({ url: session.url }, { headers: corsHeaders })
