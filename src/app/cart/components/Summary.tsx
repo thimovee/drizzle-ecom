@@ -28,7 +28,7 @@ const Summary = () => {
     }, 0);
 
     const onCheckout = async () => {
-        const response = await axios.post(`/api/checkout`, {
+        const response = await axios.post(`https://drizzle-ecom-yit7.vercel.app/api/checkout`, {
             productIds: items.map((item) => item.id)
         });
 
