@@ -2,10 +2,9 @@
 import * as React from "react"
 import { ColumnDef, ColumnFiltersState, SortingState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, PaginationState } from "@tanstack/react-table"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/Table"
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Download, PlusCircle, Trash } from "lucide-react"
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Download, PlusCircle } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button, buttonVariants } from "@/components/ui/Button"
-import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
 import { ExtendedOrder } from "./Columns"
@@ -50,8 +49,7 @@ export function DataTable<TData, TValue>({
                     placeholder="Filter products..."
                     value={(table.getColumn("name")?.getFilterValue() as string) ?? ""} />
                 <div className="flex gap-2">
-                    {table.getFilteredSelectedRowModel().rows.length > 0 && <Button onClick={deleteSelectedRows} variant="destructive" className="items-center  text-slate-100"> <Trash className="w-4 h-4 mr-2" /> Delete ({table.getFilteredSelectedRowModel().rows.length})</Button>}
-                    <Link href="/dashboard/products/new" className={cn(buttonVariants({ variant: 'ghost' }), 'items-center bg-slate-900 hover:bg-slate-700 hover:text-white text-slate-100')}> <PlusCircle className="w-4 h-4 mr-2" /> Add Product</Link>
+                    <a href="/dashboard/products/new" className={cn(buttonVariants({ variant: 'ghost' }), 'items-center bg-slate-900 hover:bg-slate-700 hover:text-white text-slate-100')}> <PlusCircle className="w-4 h-4 mr-0 md:mr-2" /> <span className="hidden md:flex">Add Product</span></a>
                     <Button className='items-center bg-slate-900 hover:bg-slate-700 hover:text-white text-slate-100' onClick={async () => {
                         const rows =
                             table.getFilteredSelectedRowModel().rows
@@ -60,12 +58,11 @@ export function DataTable<TData, TValue>({
                                     .rows
                                 : table.getFilteredRowModel().rows
 
-                        let csvContent = "ProductID;Product Name;Category;Price;Inventory;Rating;Added\n";
+                        let csvContent = "OrderID;Paid;ProductNames;Total;\n";
 
                         for (const row of rows) {
                             csvContent +=
-                                // @ts-ignore
-                                `${row.original.id};${row.original.name};${row.original.categoryName};${row.original.price};${row.original.inventory};${row.original.rating};${row.original.createdAt}\n`;
+                                `${row.original.id};${row.original.isPaid};${row.original.productNames};${row.original.totalOrderPrice};\n`;
                         }
 
                         const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
@@ -77,7 +74,10 @@ export function DataTable<TData, TValue>({
                         link.click();
                         document.body.removeChild(link);
                     }}>
-                        <Download className="w-4 h-4 mr-2" /> Download
+                        <Download className="w-4 h-4 mr-0 md:mr-2" /> 
+                        <span className="hidden md:flex">
+                        Download
+                        </span>
                     </Button>
                 </div>
             </div>

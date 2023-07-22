@@ -1,7 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import dayjs from "dayjs"
-import { BsStarFill, BsStarHalf, BsStar } from "react-icons/bs"
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
 }

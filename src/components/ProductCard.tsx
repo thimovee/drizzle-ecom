@@ -11,12 +11,15 @@ import { formatPrice } from "@/lib/utils";
 import IconButton from "./ui/icon-button";
 
 interface ProductCard {
-    product: ExtendedProduct
+    product: ExtendedProduct,
 }
 
 const ProductCard: React.FC<ProductCard> = ({
     product
 }) => {
+
+
+
     const previewModal = usePreviewModal();
     const cart = useCart();
     const router = useRouter();
@@ -26,12 +29,12 @@ const ProductCard: React.FC<ProductCard> = ({
     };
 
     const onPreview: MouseEventHandler<HTMLButtonElement> = (event) => {
-        event.stopPropagation();
+        event.preventDefault();
         previewModal.onOpen(product);
     };
 
     const onAddToCart: MouseEventHandler<HTMLButtonElement> = (event) => {
-        event.stopPropagation();
+        event.preventDefault();
         cart.addItem(product);
     };
     // @ts-ignore
@@ -39,9 +42,10 @@ const ProductCard: React.FC<ProductCard> = ({
     const imageUrl = images && images[0]?.url;
 
     return (
-        <div onClick={handleClick} className="bg-white group cursor-pointer rounded-xl border p-3 space-y-4">
+        <a href={`/products/${product.id}`} className="w-full bg-white group cursor-pointer rounded-xl border p-3 space-y-4">
             <div className="aspect-square rounded-xl bg-gray-100 relative">
                 {product.images ? <Image
+                onClick={handleClick}
                     src={imageUrl}
                     alt={product.name}
                     fill
@@ -68,7 +72,7 @@ const ProductCard: React.FC<ProductCard> = ({
             <div className="flex items-center justify-between font-semibold">
                 {formatPrice(product.price)}
             </div>
-        </div>
+        </a>
     );
 }
 

@@ -1,7 +1,7 @@
 "use client"
 import { Checkbox } from "@/components/ui/checkbox"
 import { ColumnDef } from "@tanstack/react-table"
-import { ChevronDown, Copy, Edit, Eye, MoreHorizontal, Trash } from "lucide-react";
+import { ChevronDown, Edit, Eye, MoreHorizontal, Trash } from "lucide-react";
 import { formatDate, formatPrice } from "@/lib/utils";
 import { Product } from "@/db/schema";
 import { Badge } from "@/components/ui/Badge";
@@ -9,12 +9,10 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/DropdownMenu"
 import { Button } from "@/components/ui/Button";
-import Link from "next/link";
 import { toast } from "sonner";
 
 export interface ExtendedProduct extends Product {
@@ -97,6 +95,7 @@ export const columns: ColumnDef<ExtendedProduct>[] = [
         header: ({ column }) => {
             return (
                 <button
+                    className="hidden lg:flex"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Inventory
@@ -105,23 +104,7 @@ export const columns: ColumnDef<ExtendedProduct>[] = [
         }
         ,
         cell: (cell) => (
-            <span className=" font-medium">{cell.row.original.inventory}</span>
-        )
-    },
-    {
-        accessorKey: "rating",
-        header: ({ column }) => {
-            return (
-                <button
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Rating
-                </button>
-            )
-        }
-        ,
-        cell: (cell) => (
-            <span className=" font-medium">{cell.row.original.rating}</span>
+            <span className="hidden lg:flex font-medium">{cell.row.original.inventory}</span>
         )
     },
     {
@@ -129,7 +112,7 @@ export const columns: ColumnDef<ExtendedProduct>[] = [
         header: ({ column }) => {
             return (
                 <button
-                    className="flex"
+                    className="hidden lg:flex"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Created At
@@ -138,14 +121,14 @@ export const columns: ColumnDef<ExtendedProduct>[] = [
             )
         }
         ,
-        cell: (cell) => formatDate(cell.getValue() as Date),
+        cell: (cell) => <span className="hidden lg:flex px-4">{formatDate(cell.getValue() as Date)}</span>
     },
     {
         id: "actions",
         header: ({ column }) => {
             return (
                 <span
-                    className="flex"
+                    className="hidden md:flex"
                 >
                     Actions
                 </span>
@@ -155,20 +138,22 @@ export const columns: ColumnDef<ExtendedProduct>[] = [
             const product = row.original
 
             return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0 items-center">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="text-slate-800">
-                        <DropdownMenuItem asChild><Link href={`/dashboard/products/edit/${product.id}`} className="flex"><Edit className="w-4 h-4 mr-2" />  Edit</Link></DropdownMenuItem>
-                        <DropdownMenuItem asChild><Link className="flex items-center" href={`/products/${product.id}`}> <Eye className="w-4 h-4 mr-2" /> View</Link></DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem> <span onClick={handleDeletion} className="flex w-full"><Trash className="w-4 h-4 mr-2" /> Delete</span></DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <div className="hidden md:flex">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0 items-center">
+                                <span className="sr-only">Open menu</span>
+                                <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="text-slate-800">
+                            <DropdownMenuItem asChild><a href={`/dashboard/products/edit/${product.id}`} className="flex"><Edit className="w-4 h-4 mr-2" />  Edit</a></DropdownMenuItem>
+                            <DropdownMenuItem asChild><a className="flex items-center" href={`/products/${product.id}`}> <Eye className="w-4 h-4 mr-2" /> View</a></DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem> <span onClick={handleDeletion} className="flex w-full"><Trash className="w-4 h-4 mr-2" /> Delete</span></DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
             )
         },
     },

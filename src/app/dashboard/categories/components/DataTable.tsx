@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input"
 import { Button, buttonVariants } from "@/components/ui/Button"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
-import Link from "next/link"
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
@@ -44,13 +43,13 @@ export function DataTable<TData, TValue>({
     return (
         <div className="rounded-md">
             <div className="flex pt-2 pb-4 w-full justify-between">
-                <Input className="max-w-fit focus:outline-none" onChange={(event: any) =>
+                <Input className="text-sm lg:text-base w-[130px] lg:w-48 focus:outline-none" onChange={(event: any) =>
                     table.getColumn("name")?.setFilterValue(event.target.value)}
                     placeholder="Filter categories..."
                     value={(table.getColumn("name")?.getFilterValue() as string) ?? ""} />
                 <div className="flex gap-2">
-                    {table.getFilteredSelectedRowModel().rows.length > 0 && <Button onClick={deleteItems} variant="destructive" className="items-center  text-slate-100"> <Trash className="w-4 h-4 mr-2" /> Delete ({table.getFilteredSelectedRowModel().rows.length})</Button>}
-                    <Link href="/dashboard/categories/new" className={cn(buttonVariants({ variant: 'ghost' }), 'items-center bg-slate-900 hover:bg-slate-700 hover:text-white text-slate-100')}> <PlusCircle className="w-4 h-4 mr-2" /> Add Category</Link>
+                    {table.getFilteredSelectedRowModel().rows.length > 0 && <Button onClick={deleteItems} variant="destructive" className="items-center  text-slate-100"> <Trash className="w-4 h-4 mr-0 md:mr-2" /> <span className="hidden md:flex">Delete</span> ({table.getFilteredSelectedRowModel().rows.length})</Button>}
+                    <a href="/dashboard/categories/new" className={cn(buttonVariants({ variant: 'ghost' }), 'items-center bg-slate-900 hover:bg-slate-700 hover:text-white text-slate-100')}> <PlusCircle className="w-4 h-4 mr-0 md:mr-2" /> <span className="hidden md:flex">Add Category</span></a>
                     <Button onClick={async () => {
                         const rows =
                             table.getFilteredSelectedRowModel().rows
@@ -73,7 +72,10 @@ export function DataTable<TData, TValue>({
                         link.click();
                         document.body.removeChild(link);
                     }} className='items-center bg-slate-900 hover:bg-slate-700 hover:text-white text-slate-100'>
-                        <Download className="w-4 h-4 mr-2" /> Download
+                        <Download className="w-4 h-4 mr-0 md:mr-2" />
+                        <span className="hidden md:flex">
+                            Download
+                        </span>
                     </Button>
                 </div>
             </div>

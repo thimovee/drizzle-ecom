@@ -5,7 +5,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, Download, PlusCircle, Trash } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button, buttonVariants } from "@/components/ui/Button"
-import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
 import { ExtendedProduct } from "./Columns"
@@ -46,13 +45,13 @@ export function DataTable<TData, TValue>({
     return (
         <div className="rounded-md">
             <div className="flex pt-2 pb-4 w-full justify-between">
-                <Input className="max-w-fit focus:outline-none" onChange={(event: any) =>
+                <Input className="text-sm lg:text-base w-36 lg:w-48 focus:outline-none" onChange={(event: any) =>
                     table.getColumn("name")?.setFilterValue(event.target.value)}
                     placeholder="Filter products..."
                     value={(table.getColumn("name")?.getFilterValue() as string) ?? ""} />
                 <div className="flex gap-2">
-                    {table.getFilteredSelectedRowModel().rows.length > 0 && <Button onClick={deleteSelectedRows} variant="destructive" className="items-center  text-slate-100"> <Trash className="w-4 h-4 mr-2" /> Delete ({table.getFilteredSelectedRowModel().rows.length})</Button>}
-                    <Link href="/dashboard/products/new" className={cn(buttonVariants({ variant: 'ghost' }), 'items-center bg-slate-900 hover:bg-slate-700 hover:text-white text-slate-100')}> <PlusCircle className="w-4 h-4 mr-2" /> Add Product</Link>
+                    {table.getFilteredSelectedRowModel().rows.length > 0 && <Button onClick={deleteSelectedRows} variant="destructive" className="items-center  text-slate-100"> <Trash className="w-4 h-4 mr-0 md:mr-2" /> <span className="hidden md:flex">Delete </span> ({table.getFilteredSelectedRowModel().rows.length})</Button>}
+                    <a href="/dashboard/products/new" className={cn(buttonVariants({ variant: 'ghost' }), 'items-center bg-slate-900 hover:bg-slate-700 hover:text-white text-slate-100')}> <PlusCircle className="w-4 h-4 mr-0 md:mr-2" /> <span className="hidden md:flex">Add Product</span></a>
                     <Button className='items-center bg-slate-900 hover:bg-slate-700 hover:text-white text-slate-100' onClick={async () => {
                         const rows =
                             table.getFilteredSelectedRowModel().rows
@@ -61,12 +60,11 @@ export function DataTable<TData, TValue>({
                                     .rows
                                 : table.getFilteredRowModel().rows
 
-                        let csvContent = "ProductID;Product Name;Category;Price;Inventory;Rating;Added\n";
+                        let csvContent = "ProductID;Product Name;Category;Price;Inventory;Added\n";
 
                         for (const row of rows) {
                             csvContent +=
-                                // @ts-ignore
-                                `${row.original.id};${row.original.name};${row.original.categoryName};${row.original.price};${row.original.inventory};${row.original.rating};${row.original.createdAt}\n`;
+                                `${row.original.id};${row.original.name};${row.original.categoryName};${row.original.price};${row.original.inventory};${row.original.createdAt}\n`;
                         }
 
                         const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
@@ -78,11 +76,11 @@ export function DataTable<TData, TValue>({
                         link.click();
                         document.body.removeChild(link);
                     }}>
-                        <Download className="w-4 h-4 mr-2" /> Download
+                        <Download className="w-4 h-4 mr-0 md:mr-2" /> <span className="hidden md:flex">Download</span>
                     </Button>
                 </div>
             </div>
-            <div className="border-b border-b-transparent">
+            <div className="border-b border-b-transparent overflow-hidden">
                 <Table>
                     <TableHeader className="bg-slate-100 font-semibold ">
                         {table.getHeaderGroups().map((headerGroup) => (
@@ -126,7 +124,7 @@ export function DataTable<TData, TValue>({
                     </TableBody>
                 </Table>
                 <div className="flex justify-between mt-4 px-2">
-                    <div className="flex-1 text-sm">
+                    <div className="flex-1 text-sm mt-3">
                         {table.getFilteredSelectedRowModel().rows.length} of{" "}
                         {table.getRowModel().rows.length} row(s) selected.
                     </div>

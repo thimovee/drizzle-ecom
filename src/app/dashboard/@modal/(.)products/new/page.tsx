@@ -1,4 +1,4 @@
-import { AddProductForm } from '@/components/AddProductForm'
+import { AddProductForm } from '@/components/forms/AddProductForm'
 import CloseModal from '@/components/CloseModal'
 import getCategories from '@/lib/getAllCategories'
 import React from 'react'

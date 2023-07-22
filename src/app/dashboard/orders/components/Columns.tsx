@@ -1,9 +1,13 @@
 "use client"
 import { Checkbox } from "@/components/ui/checkbox"
 import { ColumnDef } from "@tanstack/react-table"
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ChevronRight } from "lucide-react";
 import { formatDate, formatPrice } from "@/lib/utils";
 import { Order } from "@/db/schema";
+import { Badge } from "@/components/ui/Badge";
+import { Dialog, DialogTrigger } from "@/components/ui/Dialog";
+import { DialogContent } from "@radix-ui/react-dialog";
+import Modal from "@/components/ui/Modal";
 
 export interface ExtendedOrder extends Order {
     productNames: string,
@@ -61,26 +65,6 @@ export const columns: ColumnDef<ExtendedOrder>[] = [
         )
     },
     {
-        accessorKey: "Products",
-        header: ({ column }) => {
-            return (
-                <button onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-                    Products
-                </button>
-            );
-        },
-        cell: (cell) => (
-            <div className="flex flex-col">
-                {cell.row.original.productNames.split(",").map((productName, index) => (
-                    <div className="flex items-center gap-2" key={index}>
-                        <span className="font-medium">- {productName}</span>
-                    </div>
-                ))}
-            </div>
-        ),
-    },
-
-    {
         accessorKey: "totalOrderPrice",
         header: ({ column }) => {
             return (
@@ -101,7 +85,7 @@ export const columns: ColumnDef<ExtendedOrder>[] = [
         header: ({ column }) => {
             return (
                 <button
-                    className="flex"
+                    className="hidden xl:flex"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Created At
@@ -110,6 +94,6 @@ export const columns: ColumnDef<ExtendedOrder>[] = [
             )
         }
         ,
-        cell: (cell) => formatDate(cell.getValue() as Date),
+        cell: (cell) => <span className="hidden xl:flex">{formatDate(cell.getValue() as Date)}</span>
     },
 ]

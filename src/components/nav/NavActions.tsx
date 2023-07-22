@@ -29,9 +29,9 @@ const NavbarActions = () => {
                         size={20}
                         color="white"
                     />
-                    {cart.items.length > 0 && <span className="ml-2 text-sm font-medium text-white">
+                    <span className="ml-2 text-sm font-medium text-white">
                         {cart.items.length}
-                    </span>}
+                    </span>
                 </Button>
             </div>
         </>

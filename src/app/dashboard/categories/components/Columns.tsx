@@ -1,20 +1,10 @@
 "use client"
 import { Checkbox } from "@/components/ui/checkbox"
 import { ColumnDef } from "@tanstack/react-table"
-import { ChevronDown, Copy, Eye, MoreHorizontal, Trash } from "lucide-react";
-import { formatDate, formatPrice } from "@/lib/utils";
+import { ChevronDown } from "lucide-react";
+import { formatDate } from "@/lib/utils";
 import { Category } from "@/db/schema";
 import { Badge } from "@/components/ui/Badge";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/DropdownMenu"
-import { Button } from "@/components/ui/Button";
-import Link from "next/link";
 import Image from "next/image";
 export const columns: ColumnDef<Category>[] = [
     {
@@ -57,7 +47,7 @@ export const columns: ColumnDef<Category>[] = [
         header: ({ column }) => {
             return (
                 <button
-                    className="flex"
+                    className="hidden md:flex"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Description
@@ -65,7 +55,7 @@ export const columns: ColumnDef<Category>[] = [
             )
         },
         cell: (cell) => (
-            <span className="font-medium"><Badge variant="outline">{cell.row.original.description.slice(0, 100)}...</Badge></span>
+            <span className="font-medium hidden md:flex">{cell.row.original.description.slice(0, 100)}...</span>
         )
     },
     {
@@ -90,7 +80,7 @@ export const columns: ColumnDef<Category>[] = [
         header: ({ column }) => {
             return (
                 <button
-                    className="flex"
+                    className="hidden md:flex"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Created At
@@ -99,44 +89,6 @@ export const columns: ColumnDef<Category>[] = [
             )
         }
         ,
-        cell: (cell) => formatDate(cell.getValue() as Date),
-    },
-    {
-        id: "actions",
-        header: ({ column }) => {
-            return (
-                <span
-                    className="flex"
-                >
-                    Actions
-                </span>
-            )
-        },
-        cell: ({ row }) => {
-            const product = row.original
-
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0 items-center">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                            onClick={() => navigator.clipboard.writeText(product.id.toString())}
-                        >
-                            <Copy className="w-4 h-4 mr-2" />  Copy ID
-                        </DropdownMenuItem>
-                        <DropdownMenuItem><Link className="flex items-center" href={`/products/${product.id}`}> <Eye className="w-4 h-4 mr-2" /> Product Page</Link></DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem> <Trash className="w-4 h-4 mr-2" /> Delete Product</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            )
-        },
+        cell: (cell) => <span className="hidden md:flex">{formatDate(cell.getValue() as Date)}</span>
     },
 ]

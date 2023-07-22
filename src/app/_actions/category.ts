@@ -1,5 +1,4 @@
 "use server"
-import { revalidatePath } from "next/cache"
 import { db } from "@/db"
 import { categories } from "@/db/schema"
 import { z } from "zod"
@@ -8,7 +7,6 @@ import { eq } from "drizzle-orm"
 
 
 export async function addCategory(input: z.infer<typeof categorySchema>) {
-
     const categoryWithSameName = await db.query.categories.findFirst({
         where: eq(categories.name, input.name),
     })

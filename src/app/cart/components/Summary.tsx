@@ -28,7 +28,7 @@ const Summary = () => {
     }, 0);
 
     const onCheckout = async () => {
-        const response = await axios.post(`http://localhost:3000/api/checkout`, {
+        const response = await axios.post(`${process.env.SITE_URL}/api/checkout`, {
             productIds: items.map((item) => item.id)
         });
 
@@ -48,7 +48,7 @@ const Summary = () => {
                     <span>{formatPrice(totalPrice)}</span>
                 </div>
             </div>
-            <Button onClick={onCheckout} disabled={items.length === 0} className="w-full mt-6">
+            <Button onClick={onCheckout} disabled={items.length === 0} className="bg-slate-900 text-white w-full mt-6">
                 Checkout
             </Button>
         </div>

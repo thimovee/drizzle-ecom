@@ -1,11 +1,13 @@
 import { UserProfile } from "@clerk/nextjs"
 import React from 'react'
 
+export const revalidate = 0
+
 const page = async () => {
 
 
     return (
-        <div className="mx-auto md:mx-0">
+        <div className="mx-auto md:mx-0 pl-4 lg:pl-0">
             <div className="flex flex-col gap-2">
                 <h1 className="font-bold text-3xl">Account</h1>
                 <p className='text-slate-400'>Manage your account settings.</p>

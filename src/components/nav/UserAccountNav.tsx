@@ -1,7 +1,5 @@
-import Link from 'next/link'
 import { SignOutButton } from '@clerk/nextjs'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/Avatar"
-import { Button, buttonVariants } from "@/components/ui/Button"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -35,6 +33,7 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
                             <AvatarImage
                                 src={user.imageUrl}
                                 alt={user.username ?? ""}
+                                role='img'
                             />
                             <AvatarFallback>{initials}</AvatarFallback>
                         </Avatar>
@@ -53,19 +52,19 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
                         <DropdownMenuSeparator />
                         <DropdownMenuGroup>
                             <DropdownMenuItem asChild>
-                                <Link href="/dashboard">
+                                <a href="/dashboard">
                                     <User2
                                         className="mr-2 h-4 w-4"
                                         aria-hidden="true"
                                     />
                                     Account
-                                </Link>
+                                </a>
                             </DropdownMenuItem>
                             <DropdownMenuItem asChild>
-                                <Link href="/dashboard/products">
+                                <a href="/dashboard/products">
                                     <LayoutDashboard className="mr-2 h-4 w-4" aria-hidden="true" />
                                     Dashboard
-                                </Link>
+                                </a>
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
@@ -82,9 +81,10 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
                     </DropdownMenuContent>
                 </DropdownMenu >
             ) : (
-                <Link href="/sign-in" className='hover:bg-slate-100 p-2 rounded-md duration-200 ease-in'>
+                <a href="/sign-in" className='hover:bg-slate-100 p-2 rounded-md duration-200 ease-in'>
                     <User2 className="w-5 h-5" />
-                </Link>
+                    <span className="sr-only">Login</span>
+                </a>
             )
             }
         </>

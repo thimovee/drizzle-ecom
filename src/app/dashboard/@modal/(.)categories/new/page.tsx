@@ -1,4 +1,4 @@
-import { AddCategoryForm } from '@/components/AddCategoryForm'
+import { AddCategoryForm } from '@/components/forms/AddCategoryForm'
 import CloseModal from '@/components/CloseModal'
 import React from 'react'
 

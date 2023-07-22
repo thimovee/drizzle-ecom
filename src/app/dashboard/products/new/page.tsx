@@ -1,8 +1,7 @@
-import { AddProductForm } from '@/components/AddProductForm'
+import { AddProductForm } from '@/components/forms/AddProductForm'
 import getCategories from '@/lib/getAllCategories'
 import React from 'react'
 import { Metadata } from 'next'
-
 export const metadata: Metadata = {
     title: "Create Product",
     description: "Create a new product",

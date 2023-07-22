@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { toast } from "sonner";
 import { X, ImageIcon } from "lucide-react";
 
 import IconButton from "@/components/ui/icon-button";
@@ -48,11 +47,10 @@ const CartItem: React.FC<CartItemProps> = ({
                             {data.name}
                         </p>
                     </div>
-
-                    <div className="mt-1 flex text-sm">
-                        <Badge>{data.categoryName}</Badge>
-                    </div>
                     <span>{formatPrice(data.price)}</span>
+                    <div className="mt-1 flex text-sm">
+                        <Badge variant={"outline"}>{data.categoryName}</Badge>
+                    </div>
                 </div>
             </div>
         </li>

@@ -4,7 +4,6 @@ import { stripe } from "@/lib/stripe";
 import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { orders, products } from "@/db/schema";
-import { sql } from 'drizzle-orm';
 const { v4: uuidv4 } = require('uuid');
 
 const corsHeaders = {

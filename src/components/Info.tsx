@@ -1,7 +1,12 @@
 import { formatPrice } from "@/lib/utils";
 import { ExtendedProduct } from "@/app/dashboard/products/components/Columns";
 import AddToCartButton from "./AddToCartButton";
-
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion"
 interface InfoProps {
     product: ExtendedProduct
 };
@@ -16,9 +21,18 @@ const Info: React.FC<InfoProps> = ({ product }) => {
                 </p>
             </div>
             <hr className="my-4" />
-            <div className="mt-10 flex  items-end justify-center gap-x-3">
+            <h2 className="font-semibold text-lg">Category: <span className="capitalize font-normal">{product.categoryName}</span></h2>
+            <div className="my-6 flex  gap-x-3">
                 <AddToCartButton product={product} />
             </div>
+            <Accordion type="multiple" >
+                <AccordionItem value="description" defaultValue="description">
+                    <AccordionTrigger>Description</AccordionTrigger>
+                    <AccordionContent>
+                        {product.description}
+                    </AccordionContent>
+                </AccordionItem>
+            </Accordion>
         </div>
     );
 }

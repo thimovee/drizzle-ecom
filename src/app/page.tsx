@@ -6,6 +6,7 @@ import { eq } from "drizzle-orm"
 import { ExtendedProduct } from './dashboard/products/components/Columns';
 import TrendingCategories from '@/components/TrendingCategories';
 import FeaturedProducts from '@/components/FeaturedProducts';
+import getCategories from '@/lib/getAllCategories'
 
 export const metadata: Metadata = {
   title: "ECOM | Home",
@@ -26,7 +27,7 @@ export default async function Home() {
     }));
 
   const featuredProduct = allProducts.find((product) => product.id === featuredProductID)
-  const allCategories = await db.select().from(categories)
+  const allCategories = await getCategories()
 
   return (
     <div className="flex flex-col">
@@ -37,7 +38,7 @@ export default async function Home() {
         <TrendingCategories categories={allCategories.slice(0, 4)} />
       </section>
       <section id="featured-products" className="w-full my-8">
-        <FeaturedProducts products={allProducts.slice(0, 8)} />
+        <FeaturedProducts products={allProducts.slice(0, 4)} />
       </section>
     </div>
   )

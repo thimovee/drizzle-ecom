@@ -2,8 +2,9 @@ import { notFound } from "next/navigation"
 import { db } from "@/db"
 import { categories, products } from "@/db/schema"
 import { eq } from "drizzle-orm"
-import EditProductForm from "@/components/EditProductForm";
+import EditProductForm from "@/components/forms/EditProductForm";
 import { Metadata } from 'next'
+import getCategories from "@/lib/getAllCategories";
 
 type Props = {
     params: { id: string }
@@ -21,7 +22,7 @@ export async function generateMetadata(
 
 
 export default async function EditProduct({ params }: { params: { id: number } }) {
-    const allCategories = await db.select().from(categories)
+    const allCategories = await getCategories()
     const res = await db.select().from(products).where(eq(products.id, params.id));
     const product = res[0]
 

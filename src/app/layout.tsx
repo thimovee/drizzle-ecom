@@ -1,5 +1,5 @@
 import Footer from '@/components/Footer'
-import Navbar from '@/components/Navbar'
+import Navbar from '@/components/nav/Navbar'
 import '@/styles/globals.css'
 import { Toaster } from "@/components/ui/toaster"
 import { Urbanist } from 'next/font/google'

@@ -9,7 +9,7 @@ import {
     and, eq, sql, desc
 } from "drizzle-orm"
 import { z } from "zod"
-import { getProductsSchema, productSchema } from "@/lib/validations/product"
+import { productSchema } from "@/lib/validations/product"
 import { StoredFile } from "@/types"
 
 export async function addProduct(
@@ -57,67 +57,4 @@ export async function filterProductsAction(query: string) {
   `)
     console.log(filteredProducts.rows)
     return filteredProducts.rows
-}
-
-export async function getProductsAction(
-    input: z.infer<typeof getProductsSchema>
-) {
-    const [column, order] =
-        (input.sort?.split(".") as [
-            keyof Product | undefined,
-            "asc" | "desc" | undefined
-        ]) ?? []
-    const [minPrice, maxPrice] = input.price_range?.split("-") ?? []
-    const categories =
-        // @ts-ignore
-        (input.categories?.split(".") as Product["categoryId"][]) ?? []
-
-    const { items, total } = await db.transaction(async (tx) => {
-        const items = await tx
-            .select()
-            .from(products)
-            .limit(input.limit)
-            .offset(input.offset)
-            .where(
-                and(
-                    categories.length
-                        ? inArray(products.categoryId, categories)
-                        : undefined,
-                    minPrice ? gte(products.price, minPrice) : undefined,
-                    maxPrice ? lte(products.price, maxPrice) : undefined,
-                )
-            )
-            .orderBy(
-                column && column in products
-                    ? order === "asc"
-                        ? asc(products[column])
-                        : desc(products[column])
-                    : desc(products.createdAt)
-            )
-
-        const total = await tx
-            .select({
-                count: sql<number>`count(${products.id})`,
-            })
-            .from(products)
-            .where(
-                and(
-                    categories.length
-                        ? inArray(products.categoryId, categories)
-                        : undefined,
-                    minPrice ? gte(products.price, minPrice) : undefined,
-                    maxPrice ? lte(products.price, maxPrice) : undefined,
-                )
-            )
-
-        return {
-            items,
-            total: Number(total[0]?.count) ?? 0,
-        }
-    })
-
-    return {
-        items,
-        total,
-    }
 }

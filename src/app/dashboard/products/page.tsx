@@ -6,6 +6,7 @@ import React from 'react'
 import { eq } from 'drizzle-orm'
 import { ExtendedProduct, columns } from '@/app/dashboard/products/components/Columns'
 
+export const revalidate = 0
 
 export const metadata: Metadata = {
     title: "Dashboard | Products",

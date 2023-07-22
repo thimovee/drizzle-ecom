@@ -10,10 +10,10 @@ export default async function DashboardLayout({
 
     return (
         <div className="w-full min-h-max">
-            <div className="max-w-7xl mx-auto min-h-screen flex gap-2">
+            <div className="max-w-7xl mx-auto min-h-screen flex flex-col md:flex-row gap-2">
                 <Sidebar />
                 {modal}
-                <div className="mt-8 ml-4 w-full h-full">{children}</div>
+                <div className="mt-8  w-full h-full">{children}</div>
             </div>
         </div>
     );

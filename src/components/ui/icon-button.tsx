@@ -20,6 +20,7 @@ const IconButton: React.FC<IconButtonProps> = ({
                 className
             )}
         >
+            <span className="sr-only">Icon button</span>
             {icon}
         </button>
     );

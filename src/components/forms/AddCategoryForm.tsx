@@ -23,7 +23,7 @@ import { categorySchema } from "@/lib/validations/category"
 import { useRouter } from "next/navigation"
 import { OurFileRouter } from "@/app/api/uploadthing/core"
 import { FileWithPreview } from "@/types"
-import { FileDialog } from "./FileDialog"
+import { FileDialog } from "../FileDialog"
 
 
 type Inputs = z.infer<typeof categorySchema>
@@ -47,7 +47,7 @@ export function AddCategoryForm() {
         startTransition(async () => {
             try {
                 const thumbnail = data.thumbnail as FileWithPreview[]
-                    // @ts-ignore
+                // @ts-ignore
                     ? await startUpload(data.thumbnail).then((res) => {
                         const formattedImages = res?.map((image) => ({
                             id: image.fileKey,

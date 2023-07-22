@@ -1,13 +1,13 @@
 import { notFound } from "next/navigation"
 import { db } from "@/db"
-import { categories, products } from "@/db/schema"
+import {  products } from "@/db/schema"
 import { eq } from "drizzle-orm"
-import EditProductForm from "@/components/EditProductForm";
-import { Loader } from "lucide-react";
+import EditProductForm from "@/components/forms/EditProductForm";
 import CloseModal from '@/components/CloseModal'
+import getCategories from "@/lib/getAllCategories";
 
 export default async function EditProduct({ params }: { params: { id: number } }) {
-    const allCategories = await db.select().from(categories)
+    const allCategories = await getCategories()
     const res = await db.select().from(products).where(eq(products.id, params.id));
     const product = res[0]
 

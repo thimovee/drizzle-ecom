@@ -7,6 +7,8 @@ import { DataTable } from './components/DataTable'
 import { Info } from 'lucide-react'
 import { ExtendedOrder } from './components/Columns'
 
+export const revalidate = 0
+
 export const metadata: Metadata = {
     title: "Dashboard | Orders",
     description: "View all orders.",
