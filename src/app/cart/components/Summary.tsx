@@ -28,7 +28,7 @@ const Summary = () => {
     }, 0);
 
     const onCheckout = async () => {
-        const response = await axios.post(`${process.env.SITE_URL}/api/checkout`, {
+        const response = await axios.post(`/api/checkout`, {
             productIds: items.map((item) => item.id)
         });
 
