@@ -4,6 +4,7 @@ import { stripe } from "@/lib/stripe";
 import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { orders, products } from "@/db/schema";
+import { sql } from 'drizzle-orm';
 const { v4: uuidv4 } = require('uuid');
 
 const corsHeaders = {
@@ -53,8 +54,8 @@ export async function POST(req: Request) {
         mode: "payment",
         billing_address_collection: "required",
         phone_number_collection: { enabled: true },
-        success_url: `/cart?succes=1`,
-        cancel_url: `/cart?canceled=1`,
+        success_url: `drizzle-ecom-yit7.vercel.app/cart?succes=1`,
+        cancel_url: `drizzle-ecom-yit7.vercel.app/cart?canceled=1`,
         metadata: { orderId: orderId },
     });
     return NextResponse.json({ url: session.url }, { headers: corsHeaders })
