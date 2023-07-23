@@ -49,7 +49,6 @@ export function DataTable<TData, TValue>({
                     placeholder="Filter products..."
                     value={(table.getColumn("name")?.getFilterValue() as string) ?? ""} />
                 <div className="flex gap-2">
-                    <a href="/dashboard/products/new" className={cn(buttonVariants({ variant: 'ghost' }), 'items-center bg-slate-900 hover:bg-slate-700 hover:text-white text-slate-100')}> <PlusCircle className="w-4 h-4 mr-0 md:mr-2" /> <span className="hidden md:flex">Add Product</span></a>
                     <Button className='items-center bg-slate-900 hover:bg-slate-700 hover:text-white text-slate-100' onClick={async () => {
                         const rows =
                             table.getFilteredSelectedRowModel().rows
