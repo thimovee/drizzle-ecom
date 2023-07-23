@@ -54,8 +54,8 @@ export async function POST(req: Request) {
         mode: "payment",
         billing_address_collection: "required",
         phone_number_collection: { enabled: true },
-        success_url: `drizzle-ecom-yit7.vercel.app/cart?succes=1`,
-        cancel_url: `drizzle-ecom-yit7.vercel.app/cart?canceled=1`,
+        success_url: `https://drizzle-ecom-yit7.vercel.app/cart?succes=1`,
+        cancel_url: `https://drizzle-ecom-yit7.vercel.app/cart?canceled=1`,
         metadata: { orderId: orderId },
     });
     return NextResponse.json({ url: session.url }, { headers: corsHeaders })
