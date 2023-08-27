@@ -4,7 +4,7 @@
 Made using Drizzle, Next.js, TailwindCSS, RadixUI, Zod, Stripe, Clerk, Zustand & Uploadthing.
 Live website
 
-[Live website](drizzle-ecom-yit7.vercel.app)
+[Live website](https://drizzle-ecom-yit7.vercel.app/)
 
 
 ### Project Functionalities
